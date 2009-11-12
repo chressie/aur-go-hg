@@ -29,14 +29,14 @@ build(){
     export GOOS=linux
     export PATH=$PATH:$GOBIN
 
-    if [ -d $srcdir/$_hgrepo ]; then
-        cd $srcdir/$_hgrepo
+    if [ -d $GOROOT ]; then
+        cd $GOROOT
         # Remove all files not under version control
         hg status -i -u | cut -d' ' -f2 | xargs rm -rf
         hg pull
         hg update
     else
-        hg clone $_hgroot $srcdir/$_hgrepo
+        hg clone $_hgroot $GOROOT || return 1
     fi
 
     mkdir -p $GOBIN
