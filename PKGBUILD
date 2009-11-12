@@ -1,5 +1,5 @@
 pkgname=go-lang-hg
-pkgver=3977
+pkgver=4008
 pkgrel=1
 pkgdesc="A New, Experimental, Concurrent, Garbage-Collected Systems Programming Language"
 url="http://golang.org/"
@@ -49,7 +49,7 @@ build(){
 
     mkdir -p $pkgdir/$_targetdir $_licensedir $_profiledir
 
-    cp -a $GOROOT/{bin,doc,include,lib,misc,pkg} $pkgdir/$_targetdir
+    cp -dR $GOROOT/{bin,doc,include,lib,misc,pkg} $pkgdir/$_targetdir
     cp $GOROOT/LICENSE $_licensedir
 
     cat > $_profiledir/go-lang.sh << EOF
