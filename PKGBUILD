@@ -32,9 +32,9 @@ build(){
     if [ -d $GOROOT ]; then
         cd $GOROOT
         # Remove all files not under version control
-        hg status -i -u | cut -d' ' -f2 | xargs rm -rf
-        hg pull
-        hg update
+        hg status -i -u | cut -d' ' -f2 | xargs rm -rf || return 1
+        hg pull || return 1
+        hg update || return 1
     else
         hg clone $_hgroot $GOROOT || return 1
     fi
