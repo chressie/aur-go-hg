@@ -1,5 +1,5 @@
 pkgname=go-lang-hg
-pkgver=4008
+pkgver=4009
 pkgrel=1
 pkgdesc="A New, Experimental, Concurrent, Garbage-Collected Systems Programming Language"
 url="http://golang.org/"
@@ -27,7 +27,6 @@ build(){
     export GOROOT=$srcdir/$_hgrepo
     export GOBIN=$GOROOT/bin
     export GOOS=linux
-    mkdir -p $GOBIN
     export PATH=$PATH:$GOBIN
 
     if [ -d $srcdir/$_hgrepo ]; then
@@ -39,6 +38,8 @@ build(){
     else
         hg clone $_hgroot $srcdir/$_hgrepo
     fi
+
+    mkdir -p $GOBIN
 
     cd $GOROOT/src
     ./all.bash || return 1
