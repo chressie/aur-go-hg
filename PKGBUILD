@@ -27,9 +27,8 @@ build(){
     export GOROOT=$srcdir/$_hgrepo
     export GOBIN=$GOROOT/bin
     export GOOS=linux
-    export PATH=$PATH:$GOBIN
 
-    if [ -d $GOROOT ]; then
+    if [ -d $GOROOT/.hg ]; then
         cd $GOROOT
         # Remove all files not under version control
         hg status -i -u | cut -d' ' -f2 | xargs rm -rf
@@ -40,6 +39,7 @@ build(){
     fi
 
     mkdir -p $GOBIN
+    export PATH=$PATH:$GOBIN
 
     cd $GOROOT/src
     ./all.bash || return 1
