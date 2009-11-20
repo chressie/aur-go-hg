@@ -1,5 +1,7 @@
+# Maintainer Ashok Gautham <ScriptDevil@gmail.com>
+
 pkgname=go-lang-hg
-pkgver=4009
+pkgver=4024
 pkgrel=1
 pkgdesc="A New, Experimental, Concurrent, Garbage-Collected Systems Programming Language"
 url="http://golang.org/"
@@ -23,11 +25,10 @@ build(){
         *)
             echo "Cannot determine CPU Architecture"
             return 1
-    esac
+        esac
     export GOROOT=$srcdir/$_hgrepo
     export GOBIN=$GOROOT/bin
     export GOOS=linux
-
     if [ -d $GOROOT/.hg ]; then
         cd $GOROOT
         # Remove all files not under version control
@@ -37,10 +38,8 @@ build(){
     else
         hg clone $_hgroot $GOROOT || return 1
     fi
-
     mkdir -p $GOBIN
     export PATH=$PATH:$GOBIN
-
     cd $GOROOT/src
     ./all.bash || return 1
 
