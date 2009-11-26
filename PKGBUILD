@@ -18,15 +18,12 @@ _hgrepo="go"
 
 build(){
     # Setting build environment
-    case $CARCH in
-        x86_64)
-            _goarch="amd64";;
-        i686)
-            _goarch="386";;
-        *)
-            echo "Cannot determine CPU Architecture"
-            return 1
-        esac
+    [ "$CARCH" = i686 ] && _goarch=386
+    [ "$CARCH" = x86_64 ] && _goarch=amd64
+    if [ -z "$_goarch" ]; then
+        echo "Cannot determine CPU Architecture"
+        return 1
+    fi
     _goroot=$srcdir/$_hgrepo
     _gobin=$_goroot/bin
     _goos=linux
