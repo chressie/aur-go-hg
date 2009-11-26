@@ -2,7 +2,7 @@
 # Former contributer: Ashok Gautham <ScriptDevil@gmail.com>
 
 pkgname=go-lang-hg
-pkgver=4024
+pkgver=4225
 pkgrel=1
 pkgdesc="A New, Experimental, Concurrent, Garbage-Collected Systems Programming Language"
 arch=(i686 x86_64)
