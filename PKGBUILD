@@ -32,9 +32,10 @@ build(){
         # Remove all files not under version control
         hg status -i -u | cut -d' ' -f2 | xargs rm -rf
         hg pull
-        hg update
+        hg update -r $pkgver || return 1
     else
         hg clone $_hgroot $_goroot || return 1
+        hg --cwd $_goroot update -r $pkgver || return 1
     fi
     mkdir -p $_gobin
     cd $_goroot/src
