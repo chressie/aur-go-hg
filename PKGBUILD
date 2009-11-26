@@ -20,28 +20,33 @@ build(){
     # Setting build environment
     case $CARCH in
         x86_64)
-            export GOARCH="amd64";;
+            _goarch="amd64";;
         i686)
-            export GOARCH="386";;
+            _goarch="386";;
         *)
             echo "Cannot determine CPU Architecture"
             return 1
         esac
-    export GOROOT=$srcdir/$_hgrepo
-    export GOBIN=$GOROOT/bin
-    export GOOS=linux
-    if [ -d $GOROOT/.hg ]; then
-        cd $GOROOT
+    _goroot=$srcdir/$_hgrepo
+    _gobin=$_goroot/bin
+    _goos=linux
+    if [ -d $_goroot/.hg ]; then
+        cd $_goroot
         # Remove all files not under version control
         hg status -i -u | cut -d' ' -f2 | xargs rm -rf
         hg pull
         hg update
     else
-        hg clone $_hgroot $GOROOT || return 1
+        hg clone $_hgroot $_goroot || return 1
     fi
-    mkdir -p $GOBIN
-    export PATH=$PATH:$GOBIN
-    cd $GOROOT/src
+    mkdir -p $_gobin
+    cd $_goroot/src
+
+    PATH=$PATH:$_gobin \
+    GOROOT=$_goroot \
+    GOARCH=$_goarch \
+    GOOS=linux \
+    GOBIN=$_goroot/bin \
     ./all.bash || return 1
 
     _targetdir=/opt/$pkgname
@@ -50,14 +55,14 @@ build(){
 
     mkdir -p $pkgdir/$_targetdir $_licensedir $_profiledir
 
-    cp -dR $GOROOT/{bin,doc,include,lib,misc,pkg} $pkgdir/$_targetdir
-    cp $GOROOT/LICENSE $_licensedir
+    cp -dR $_goroot/{bin,doc,include,lib,misc,pkg} $pkgdir/$_targetdir
+    cp $_goroot/LICENSE $_licensedir
 
     cat > $_profiledir/go-lang.sh << EOF
 export GOROOT=$_targetdir
 export GOBIN=\$GOROOT/bin
-export GOOS=$GOOS
-export GOARCH=$GOARCH
+export GOOS=$_goos
+export GOARCH=$_goarch
 export PATH=\$PATH:\$GOBIN
 EOF
     chmod +x $_profiledir/go-lang.sh
