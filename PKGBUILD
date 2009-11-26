@@ -42,6 +42,7 @@ build(){
     mkdir -p $_gobin
     cd $_goroot/src
 
+    LC_ALL=C \
     PATH=$PATH:$_gobin \
     GOROOT=$_goroot \
     GOARCH=$_goarch \
