@@ -9,7 +9,7 @@ arch=(i686 x86_64)
 url="http://golang.org/"
 license=(BSD)
 depends=()
-makedepends=(bison ed mercurial time)
+makedepends=(bison ed mercurial)
 options=(!strip)
 md5sums=()
 
@@ -50,7 +50,7 @@ build(){
     GOARCH=$_goarch \
     GOOS=linux \
     GOBIN=$_goroot/bin \
-    ./all.bash || return 1
+    ./make.bash || return 1
 
     # Install package contents
     _targetdir=/opt/$pkgname
