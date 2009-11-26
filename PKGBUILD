@@ -66,3 +66,5 @@ export PATH=\$PATH:\$GOBIN
 EOF
     chmod +x $_profiledir/go-lang.sh
 }
+
+# vim:et:st=4:ts=4
