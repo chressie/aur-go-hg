@@ -9,7 +9,7 @@ arch=(i686 x86_64)
 url="http://golang.org/"
 license=(BSD)
 depends=()
-makedepends=(mercurial bison ed time)
+makedepends=(bison ed mercurial time)
 options=(!strip)
 md5sums=()
 
