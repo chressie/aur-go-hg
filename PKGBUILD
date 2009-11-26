@@ -52,15 +52,13 @@ build(){
     GOBIN=$_goroot/bin \
     ./all.bash || return 1
 
+    # Install package contents
     _targetdir=/opt/$pkgname
     _licensedir=$pkgdir/usr/share/licenses/$pkgname
     _profiledir=$pkgdir/etc/profile.d
-
     mkdir -p $pkgdir/$_targetdir $_licensedir $_profiledir
-
     cp -a $_goroot/{bin,doc,include,lib,misc,pkg} $pkgdir/$_targetdir
     cp $_goroot/LICENSE $_licensedir
-
     cat > $_profiledir/go-lang.sh << EOF
 export GOROOT=$_targetdir
 export GOBIN=\$GOROOT/bin
