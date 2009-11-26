@@ -67,6 +67,9 @@ export GOARCH=$_goarch
 export PATH=\$PATH:\$GOBIN
 EOF
     chmod +x $_profiledir/go-lang.sh
+
+    # Fix permissions in case they are messed up
+    chmod -R u=rwX,g=rX,o=rX $pkgdir
 }
 
 # vim:et:sw=4:ts=4
