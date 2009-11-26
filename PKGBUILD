@@ -56,7 +56,8 @@ build(){
     _targetdir=/opt/$pkgname
     _licensedir=$pkgdir/usr/share/licenses/$pkgname
     _profiledir=$pkgdir/etc/profile.d
-    mkdir -p $pkgdir/$_targetdir $_licensedir $_profiledir
+    _srcdir=$pkgdir/$_targetdir/src
+    mkdir -p $pkgdir/$_targetdir $_licensedir $_profiledir $_srcdir
     cp -a $_goroot/{bin,doc,include,lib,misc,pkg} $pkgdir/$_targetdir
     cp $_goroot/LICENSE $_licensedir
     cat > $_profiledir/go-lang.sh << EOF
@@ -67,6 +68,7 @@ export GOARCH=$_goarch
 export PATH=\$PATH:\$GOBIN
 EOF
     chmod +x $_profiledir/go-lang.sh
+    cp -a $_goroot/src/Make.$_goarch $_srcdir
 
     # Fix permissions in case they are messed up
     chmod -R u=rwX,g=rX,o=rX $pkgdir
