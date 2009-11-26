@@ -54,7 +54,7 @@ build(){
 
     mkdir -p $pkgdir/$_targetdir $_licensedir $_profiledir
 
-    cp -dR $_goroot/{bin,doc,include,lib,misc,pkg} $pkgdir/$_targetdir
+    cp -a $_goroot/{bin,doc,include,lib,misc,pkg} $pkgdir/$_targetdir
     cp $_goroot/LICENSE $_licensedir
 
     cat > $_profiledir/go-lang.sh << EOF
