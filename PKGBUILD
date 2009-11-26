@@ -45,7 +45,7 @@ build(){
     # Start build with correct environment
     cd $_goroot/src
     LC_ALL=C \
-    PATH=$PATH:$_gobin \
+    PATH=$_gobin:$PATH \
     GOROOT=$_goroot \
     GOARCH=$_goarch \
     GOOS=linux \
