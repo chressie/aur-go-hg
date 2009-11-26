@@ -1,4 +1,5 @@
-# Maintainer Ashok Gautham <ScriptDevil@gmail.com>
+# Contributer: Christian Himpel <chressie at gmail dot com>
+# Former contributer: Ashok Gautham <ScriptDevil@gmail.com>
 
 pkgname=go-lang-hg
 pkgver=4024
