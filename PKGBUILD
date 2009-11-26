@@ -28,11 +28,10 @@ build(){
     _gobin=$_goroot/bin
     _goos=linux
     if [ -d $_goroot/.hg ]; then
-        cd $_goroot
         # Remove all files not under version control
-        hg status -i -u | cut -d' ' -f2 | xargs rm -rf
-        hg pull
-        hg update -r $pkgver || return 1
+        hg --cwd $_goroot status -i -u | cut -d' ' -f2 | xargs rm -rf
+        hg --cwd $_goroot pull
+        hg --cwd $_goroot update -r $pkgver || return 1
     else
         hg clone $_hgroot $_goroot || return 1
         hg --cwd $_goroot update -r $pkgver || return 1
