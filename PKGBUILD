@@ -68,7 +68,7 @@ export GOARCH=$_goarch
 export PATH=\$PATH:\$GOBIN
 EOF
     chmod +x $_profiledir/go-lang.sh
-    cp -a $_goroot/src/Make.{$_goarch,cmd,pkg,conf} $_srcdir
+    install -m644 $_goroot/src/Make.{$_goarch,cmd,pkg,conf} $_srcdir
 
     # Fix permissions in case they are messed up
     chmod -R u=rwX,g=rX,o=rX $pkgdir
