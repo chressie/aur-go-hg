@@ -4,7 +4,7 @@
 pkgname=go-lang-hg
 pkgver=4442
 pkgrel=1
-pkgdesc="An expressive, concurrent, garbage-collected systems programming language"
+pkgdesc="Expressive, concurrent, garbage-collected systems programming language"
 arch=(i686 x86_64)
 url="http://golang.org/"
 license=(BSD)
