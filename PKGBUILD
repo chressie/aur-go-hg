@@ -35,15 +35,10 @@ build(){
 
     # Keep source tree as is, if --noextract is given
     if [ "$NOEXTRACT" -ne 1 ]; then
-        if [ -d "$_goroot/.hg" ]; then
-            # Remove all files not under version control
-            hg --cwd "$_goroot" status -i -u | cut -d' ' -f2 | xargs rm -rf
-            hg --cwd "$_goroot" pull
-            hg --cwd "$_goroot" update -C -r $pkgver || return 1
-        else
-            hg clone "$_hgroot" "$_goroot" || return 1
-            hg --cwd "$_goroot" update -C -r $pkgver || return 1
-        fi
+        # Remove all files not under version control
+        hg --cwd "$_goroot" status -i -u | cut -d' ' -f2 | xargs rm -rf
+        hg --cwd "$_goroot" pull
+        hg --cwd "$_goroot" update -C -r $pkgver || return 1
     fi
 
     # Start build with correct environment
