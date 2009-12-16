@@ -1,5 +1,5 @@
-# Contributer: Christian Himpel <chressie at gmail dot com>
-# Former contributer: Ashok Gautham <ScriptDevil at gmail dot com>
+# Maintainer: Christian Himpel <chressie at gmail dot com>
+# Former maintainer: Ashok Gautham <ScriptDevil at gmail dot com>
 
 pkgname=go-lang-hg
 pkgver=4442
