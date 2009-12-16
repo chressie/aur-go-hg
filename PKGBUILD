@@ -17,6 +17,10 @@ _hgroot="https://go.googlecode.com/hg"
 _hgrepo="go"
 
 build(){
+    # Create local variables
+    local _goarch _goroot _gobin _goos
+    local _targetdir _licensedir _profiledir _srcdir
+
     # Setting build environment
     [ "$CARCH" = i686 ] && _goarch=386
     [ "$CARCH" = x86_64 ] && _goarch=amd64
