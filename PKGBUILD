@@ -33,14 +33,6 @@ build(){
     _goos=linux
     mkdir -p "$_gobin"
 
-    # Keep source tree as is, if --noextract is given
-    if [ "$NOEXTRACT" -ne 1 ]; then
-        # Remove all files not under version control
-        hg --cwd "$_goroot" status -i -u | cut -d' ' -f2 | xargs rm -rf
-        hg --cwd "$_goroot" pull
-        hg --cwd "$_goroot" update -C -r $pkgver || return 1
-    fi
-
     # Start build with correct environment
     cd "$_goroot/src"
     LC_ALL=C \
