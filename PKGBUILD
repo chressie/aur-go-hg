@@ -1,69 +1,75 @@
-# Contributor: Christian Himpel <chressie at gmail dot com>
-# Former contributor: Ashok Gautham <ScriptDevil at gmail dot com>
+# Maintainer: Christian Himpel <chressie at gmail dot com>
+# Contributor: Andres Perera <andres87p gmail>
+# Contributor: Ashok Gautham <ScriptDevil at gmail dot com>
+# Contributor: Matthew Bauer <mjbauer95@gmail.com>
+# Contributor: Vesa Kaihlavirta <vegai@iki.fi>
 
 pkgname=go-lang-hg
-pkgver=4442
+pkgver=4744
 pkgrel=1
-pkgdesc="Expressive, concurrent, garbage-collected systems programming language"
+pkgdesc='Google Go compiler and tools (latest version)'
 arch=(i686 x86_64)
-url="http://golang.org/"
-license=(BSD)
+url=http://golang.org/
+license=(custom)
 depends=()
-makedepends=(bison ed mercurial)
-options=(!strip)
-md5sums=()
+makedepends=(mercurial)
+options=(!strip !makeflags)
+install=go.install
+source=(go.install go.sh)
 
-_hgroot="https://go.googlecode.com/hg"
-_hgrepo="go"
+_hgroot=https://go.googlecode.com/hg/
+_hgrepo=go
 
-build(){
-    # Create local variables
-    local _goarch _goroot _gobin _goos
-    local _targetdir _licensedir _profiledir _srcdir
+build() {
+  cd $srcdir
 
-    # Setting build environment
-    [ "$CARCH" = i686 ] && _goarch=386
-    [ "$CARCH" = x86_64 ] && _goarch=amd64
-    if [ -z "$_goarch" ]; then
-        echo "Cannot determine CPU Architecture"
-        return 1
-    fi
-    _goroot="$srcdir/$_hgrepo"
-    _gobin="$_goroot/bin"
-    _goos=linux
-    mkdir -p "$_gobin"
+  msg "Connecting to Mercurial server..."
+  if [ -d $_hgrepo ]; then
+    cd $_hgrepo
+    hg pull -u || return 1
+    msg2 "The local files have been updated"
+  else
+    hg clone $_hgroot $_hgrepo || return 1
+    msg2 "Mercurial checkout done"
+  fi
 
-    # Start build with correct environment
-    cd "$_goroot/src"
-    LC_ALL=C \
-    PATH="$_gobin:$PATH" \
-    GOROOT="$_goroot" \
-    GOARCH=$_goarch \
-    GOOS=linux \
-    GOBIN="$_goroot/bin" \
-    ./make.bash || return 1
 
-    # Install package contents
-    _targetdir=/opt/$pkgname
-    _licensedir="$pkgdir/usr/share/licenses/$pkgname"
-    _profiledir="$pkgdir/etc/profile.d"
-    _srcdir="$pkgdir/$_targetdir/src"
-    mkdir -p "$pkgdir/$_targetdir" "$_licensedir" "$_profiledir" "$_srcdir"
-    cp -a "$_goroot/"{bin,doc,include,lib,misc,pkg} "$pkgdir/$_targetdir"
-    cp "$_goroot/LICENSE" "$_licensedir"
-    cat > "$_profiledir/go-lang.sh" << EOF
-export GOROOT=$_targetdir
-export GOBIN=\$GOROOT/bin
-export GOOS=$_goos
-export GOARCH=$_goarch
-export PATH=\$PATH:\$GOBIN
-EOF
-    chmod +x "$_profiledir/go-lang.sh"
-    install -m644 "$_goroot/src/Make."{$_goarch,cmd,pkg,conf} "$_srcdir"
-    find "$pkgdir" -name ~place-holder~ -print0 | xargs -0 rm
+  ARCH=$(uname -m)
+  [ "$ARCH" == "i686" ]   && GOARCH=386
+  [ "$ARCH" == "arm" ]    && GOARCH=arm
+  [ "$ARCH" == "x86_64" ] && GOARCH=amd64
+  export GOARCH
 
-    # Fix permissions in case they are messed up
-    chmod -R u=rwX,g=rX,o=rX "$pkgdir"
+  export GOROOT=$srcdir/$_hgrepo
+  export GOOS=linux
+  export GOBIN=$GOROOT/bin
+  export PATH=$PATH:$GOBIN
+
+  mkdir $GOROOT/bin &> /dev/null
+  cd $GOROOT/src || return 1
+
+  LC_ALL=C ./make.bash || return 1
+
+  cd $GOROOT || return 1
+  install -Dm644 LICENSE $pkgdir/usr/share/licenses/go/LICENSE
+  install -Dm644 misc/bash/go $pkgdir/etc/bash_completion.d/go
+  install -Dm644 misc/emacs/go-mode-load.el $pkgdir/usr/share/emacs/site-lisp/go-mode-load.el
+  install -Dm644 misc/emacs/go-mode.el $pkgdir/usr/share/emacs/site-lisp/go-mode.el
+  install -Dm644 misc/vim/go.vim $pkgdir/usr/share/vim/vimfiles/syntax/go.vim
+
+  mkdir -p $pkgdir/{etc/profile.d,usr/{share/go,lib/go,lib/go/src}}
+
+  cp -r bin $pkgdir/usr
+  cp -r doc misc -t $pkgdir/usr/share/go
+  cp -r pkg $pkgdir/usr/lib/go
+
+  # Headers for C modules
+  install -Dm644 src/Make.{$GOARCH,cmd,pkg,conf} $pkgdir/usr/lib/go/src
+  install -Dm644 src/pkg/runtime/runtime.h $pkgdir/usr/lib/go/src/pkg/runtime/runtime.h
+  install -Dm644 src/pkg/runtime/cgocall.h $pkgdir/usr/lib/go/src/pkg/runtime/cgocall.h
+  install  $srcdir/go.sh $pkgdir/etc/profile.d/
+
+  echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
 }
-
-# vim:et:sw=4:ts=4
+md5sums=('6055b666a95133e75abaa3e19d47eba8'
+         '67c472bfcfdb760d1d1f0a87cfe3661f')
