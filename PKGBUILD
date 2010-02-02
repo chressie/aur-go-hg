@@ -5,17 +5,19 @@
 # Contributor: Vesa Kaihlavirta <vegai@iki.fi>
 
 pkgname=go-lang-hg
-pkgver=4744
+pkgver=4767
 pkgrel=1
-pkgdesc='Google Go compiler and tools (latest version)'
+pkgdesc='Google Go compiler and tools (hg tip)'
 arch=(i686 x86_64)
 url=http://golang.org/
 license=(custom)
 depends=()
 makedepends=(mercurial)
+provides=(go)
+conflicts=(go)
 options=(!strip !makeflags)
 install=go.install
-source=(go.install go.sh)
+source=(go.sh)
 
 _hgroot=https://go.googlecode.com/hg/
 _hgrepo=go
@@ -71,5 +73,4 @@ build() {
 
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
 }
-md5sums=('6055b666a95133e75abaa3e19d47eba8'
-         '67c472bfcfdb760d1d1f0a87cfe3661f')
+md5sums=('67c472bfcfdb760d1d1f0a87cfe3661f')
