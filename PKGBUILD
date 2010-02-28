@@ -58,18 +58,21 @@ build() {
   install -Dm644 misc/emacs/go-mode.el $pkgdir/usr/share/emacs/site-lisp/go-mode.el
   install -Dm644 misc/vim/go.vim $pkgdir/usr/share/vim/vimfiles/syntax/go.vim
 
-  mkdir -p $pkgdir/{etc/profile.d,usr/{share/go,lib/go,lib/go/src}}
+  mkdir -p $pkgdir/usr/bin
+  mkdir -p $pkgdir/etc/profile.d
+  mkdir -p $pkgdir/opt/go/{lib,src}
 
   cp -r bin $pkgdir/usr
-  cp -r doc misc -t $pkgdir/usr/share/go
-  cp -r pkg $pkgdir/usr/lib/go
+  cp -r doc pkg $pkgdir/opt/go
+  cp -r lib/godoc $pkgdir/opt/go/lib
 
   # Headers for C modules
-  install -Dm644 src/Make.{$GOARCH,cmd,pkg,conf} $pkgdir/usr/lib/go/src
-  install -Dm644 src/pkg/runtime/runtime.h $pkgdir/usr/lib/go/src/pkg/runtime/runtime.h
-  install -Dm644 src/pkg/runtime/cgocall.h $pkgdir/usr/lib/go/src/pkg/runtime/cgocall.h
-  install  $srcdir/go.sh $pkgdir/etc/profile.d/
+  install -m644 src/Make.{$GOARCH,cmd,pkg,conf} $pkgdir/opt/go/src
+  install -Dm644 src/pkg/runtime/runtime.h $pkgdir/opt/go/src/pkg/runtime/runtime.h
+  install -Dm644 src/pkg/runtime/cgocall.h $pkgdir/opt/go/src/pkg/runtime/cgocall.h
+  install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d
+  find src/pkg -name '*.go' -exec install -Dm644 {} $pkgdir/opt/go/{} \;
 
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
 }
-md5sums=('67c472bfcfdb760d1d1f0a87cfe3661f')
+md5sums=('b7cd21a7a00922216036b3a992c60435')
