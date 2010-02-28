@@ -28,7 +28,7 @@ build() {
   msg "Connecting to Mercurial server..."
   if [ -d $_hgrepo ]; then
     cd $_hgrepo
-    hg pull -u || return 1
+    hg update || return 1
     msg2 "The local files have been updated"
   else
     hg clone $_hgroot $_hgrepo || return 1
