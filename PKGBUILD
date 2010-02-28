@@ -35,7 +35,6 @@ build() {
     msg2 "Mercurial checkout done"
   fi
 
-
   ARCH=$(uname -m)
   [ "$ARCH" == "i686" ]   && GOARCH=386
   [ "$ARCH" == "arm" ]    && GOARCH=arm
