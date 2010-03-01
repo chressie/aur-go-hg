@@ -46,24 +46,24 @@ build() {
   install -Dm644 misc/emacs/go-mode.el $pkgdir/usr/share/emacs/site-lisp/go-mode.el
   install -Dm644 misc/vim/go.vim $pkgdir/usr/share/vim/vimfiles/syntax/go.vim
 
-  targ=$pkgdir/usr/lib/go
+  _goroot=$pkgdir/usr/lib/go
 
-  mkdir -p $targ/{misc,lib}
+  mkdir -p $_goroot/{misc,lib}
 
   cp -r bin $pkgdir/usr
-  cp -r pkg $targ
-  rm $targ/pkg/~place-holder~
+  cp -r pkg $_goroot
+  rm $_goroot/pkg/~place-holder~
 
-  cp -r doc $targ
-  cp -r lib/godoc $targ/lib
-  find src/{pkg,cmd} -name \*.go -exec install -Dm644 {} $targ/{} \;
-  install -Dm644 {,$targ/}src/pkg/container/vector/Makefile
-  install -Dm644 {,$targ/}favicon.ico
-  ln -s ../../share/licenses/go/LICENSE $targ
-  cp -r misc/cgo $targ/misc
+  cp -r doc $_goroot
+  cp -r lib/godoc $_goroot/lib
+  find src/{pkg,cmd} -name \*.go -exec install -Dm644 {} $_goroot/{} \;
+  install -Dm644 {,$_goroot/}src/pkg/container/vector/Makefile
+  install -Dm644 {,$_goroot/}favicon.ico
+  ln -s ../../share/licenses/go/LICENSE $_goroot
+  cp -r misc/cgo $_goroot/misc
 
-  cp src/Make.{$GOARCH,cmd,pkg,conf} $targ/src
-  cp src/pkg/runtime/{cgocall,runtime}.h $targ/src/pkg/runtime
+  cp src/Make.{$GOARCH,cmd,pkg,conf} $_goroot/src
+  cp src/pkg/runtime/{cgocall,runtime}.h $_goroot/src/pkg/runtime
 
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
