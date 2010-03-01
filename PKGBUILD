@@ -25,16 +25,6 @@ _hgrepo=go
 build() {
   cd $srcdir
 
-  msg "Connecting to Mercurial server..."
-  if [ -d $_hgrepo ]; then
-    cd $_hgrepo
-    hg update || return 1
-    msg2 "The local files have been updated"
-  else
-    hg clone $_hgroot $_hgrepo || return 1
-    msg2 "Mercurial checkout done"
-  fi
-
   ARCH=$(uname -m)
   [ "$ARCH" == "i686" ]   && GOARCH=386
   [ "$ARCH" == "arm" ]    && GOARCH=arm
