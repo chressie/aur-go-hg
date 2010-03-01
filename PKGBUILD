@@ -56,7 +56,7 @@ build() {
 
   cp -r doc $targ
   cp -r lib/godoc $targ/lib
-  find src/{pkg,cmd} -name '*.go' -exec install -Dm644 {} $targ/{} \;
+  find src/{pkg,cmd} -name \*.go -exec install -Dm644 {} $targ/{} \;
   install -Dm644 {,$targ/}src/pkg/container/vector/Makefile
   install -Dm644 {,$targ/}favicon.ico
   ln -s ../../share/licenses/go/LICENSE $targ
