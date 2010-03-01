@@ -57,7 +57,9 @@ build() {
   cp -r pkg $pkgdir/usr/lib/go
   rm $pkgdir/usr/lib/go/pkg/~place-holder~
   find src/{pkg,cmd} -name '*.go' -exec install -Dm644 {} $pkgdir/usr/lib/go/{} \;
+  install -Dm644 src/pkg/container/vector/Makefile $pkgdir/usr/lib/go/src/pkg/container/vector/Makefile
   install -m644 favicon.ico $pkgdir/usr/lib/go
+  ln -s ../../share/licenses/go/LICENSE $pkgdir/usr/lib/go
 
   # Headers for C modules
   install -m644 src/Make.{$GOARCH,cmd,pkg,conf} $pkgdir/usr/lib/go/src
