@@ -51,22 +51,23 @@ build() {
   mkdir -p $pkgdir/usr/lib/go/{misc,lib}
 
   cp -r bin $pkgdir/usr
-  cp -r doc $pkgdir/usr/lib/go
-  cp -r lib/godoc $pkgdir/usr/lib/go/lib
-  cp -r misc/cgo $pkgdir/usr/lib/go/misc
   cp -r pkg $pkgdir/usr/lib/go
   rm $pkgdir/usr/lib/go/pkg/~place-holder~
+
+  cp -r doc $pkgdir/usr/lib/go
+  cp -r lib/godoc $pkgdir/usr/lib/go/lib
   find src/{pkg,cmd} -name '*.go' -exec install -Dm644 {} $pkgdir/usr/lib/go/{} \;
   install -Dm644 src/pkg/container/vector/Makefile $pkgdir/usr/lib/go/src/pkg/container/vector/Makefile
-  install -m644 favicon.ico $pkgdir/usr/lib/go
+  install -Dm644 favicon.ico $pkgdir/usr/lib/go/favicon.ico
   ln -s ../../share/licenses/go/LICENSE $pkgdir/usr/lib/go
+  cp -r misc/cgo $pkgdir/usr/lib/go/misc
 
   # Headers for C modules
-  install -m644 src/Make.{$GOARCH,cmd,pkg,conf} $pkgdir/usr/lib/go/src
-  install -Dm644 src/pkg/runtime/runtime.h $pkgdir/usr/lib/go/src/pkg/runtime/runtime.h
-  install -Dm644 src/pkg/runtime/cgocall.h $pkgdir/usr/lib/go/src/pkg/runtime/cgocall.h
-  install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
+  for f in src/{Make.{$GOARCH,cmd,pkg,conf},pkg/runtime/{cgocall,runtime}.h}; do
+    install -Dm644 $f $pkgdir/usr/lib/go/$f
+  done
 
+  install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
 }
 md5sums=('67c472bfcfdb760d1d1f0a87cfe3661f')
