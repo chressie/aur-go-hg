@@ -48,24 +48,24 @@ build() {
   install -Dm644 misc/emacs/go-mode.el $pkgdir/usr/share/emacs/site-lisp/go-mode.el
   install -Dm644 misc/vim/go.vim $pkgdir/usr/share/vim/vimfiles/syntax/go.vim
 
-  mkdir -p $pkgdir/usr/lib/go/{misc,lib}
+  targ=$pkgdir/usr/lib/go
+
+  mkdir -p $targ/{misc,lib}
 
   cp -r bin $pkgdir/usr
-  cp -r pkg $pkgdir/usr/lib/go
-  rm $pkgdir/usr/lib/go/pkg/~place-holder~
+  cp -r pkg $targ
+  rm $targ/pkg/~place-holder~
 
-  cp -r doc $pkgdir/usr/lib/go
-  cp -r lib/godoc $pkgdir/usr/lib/go/lib
-  find src/{pkg,cmd} -name '*.go' -exec install -Dm644 {} $pkgdir/usr/lib/go/{} \;
-  install -Dm644 src/pkg/container/vector/Makefile $pkgdir/usr/lib/go/src/pkg/container/vector/Makefile
-  install -Dm644 favicon.ico $pkgdir/usr/lib/go/favicon.ico
-  ln -s ../../share/licenses/go/LICENSE $pkgdir/usr/lib/go
-  cp -r misc/cgo $pkgdir/usr/lib/go/misc
+  cp -r doc $targ
+  cp -r lib/godoc $targ/lib
+  find src/{pkg,cmd} -name '*.go' -exec install -Dm644 {} $targ/{} \;
+  install -Dm644 {,$targ/}src/pkg/container/vector/Makefile
+  install -Dm644 {,$targ/}favicon.ico
+  ln -s ../../share/licenses/go/LICENSE $targ
+  cp -r misc/cgo $targ/misc
 
-  # Headers for C modules
-  for f in src/{Make.{$GOARCH,cmd,pkg,conf},pkg/runtime/{cgocall,runtime}.h}; do
-    install -Dm644 $f $pkgdir/usr/lib/go/$f
-  done
+  cp src/Make.{$GOARCH,cmd,pkg,conf} $targ/src
+  cp src/pkg/runtime/{cgocall,runtime}.h $targ/src/pkg/runtime
 
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
