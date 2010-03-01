@@ -25,23 +25,21 @@ _hgrepo=go
 build() {
   cd $srcdir
 
-  ARCH=$(uname -m)
-  [ "$ARCH" == "i686" ]   && GOARCH=386
-  [ "$ARCH" == "arm" ]    && GOARCH=arm
-  [ "$ARCH" == "x86_64" ] && GOARCH=amd64
-  export GOARCH
-
+  [ x$CARCH == xi686 ]   && export GOARCH=386
+  [ x$CARCH == xx86_64 ] && export GOARCH=amd64
+  [ x$CARCH == xarm ]    && export GOARCH=arm
   export GOROOT=$srcdir/$_hgrepo
   export GOOS=linux
   export GOBIN=$GOROOT/bin
   export PATH=$PATH:$GOBIN
 
-  mkdir $GOROOT/bin &> /dev/null
+  mkdir -p $GOBIN
   cd $GOROOT/src || return 1
 
   LC_ALL=C ./make.bash || return 1
 
   cd $GOROOT || return 1
+
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/go/LICENSE
   install -Dm644 misc/bash/go $pkgdir/etc/bash_completion.d/go
   install -Dm644 misc/emacs/go-mode-load.el $pkgdir/usr/share/emacs/site-lisp/go-mode-load.el
