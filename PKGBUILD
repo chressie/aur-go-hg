@@ -23,22 +23,24 @@ _hgroot=https://go.googlecode.com/hg/
 _hgrepo=go
 
 build() {
-  cd $srcdir
+  local GOARCH GOROOT GOOS GOBIN
+  export GOARCH GOROOT GOOS GOBIN
 
-  [ x$CARCH == xi686 ]   && export GOARCH=386
-  [ x$CARCH == xx86_64 ] && export GOARCH=amd64
-  [ x$CARCH == xarm ]    && export GOARCH=arm
-  export GOROOT=$srcdir/$_hgrepo
-  export GOOS=linux
-  export GOBIN=$GOROOT/bin
-  export PATH=$PATH:$GOBIN
+  [ x$CARCH = xi686 ]   && GOARCH=386
+  [ x$CARCH = xx86_64 ] && GOARCH=amd64
+  [ x$CARCH = xarm ]    && GOARCH=arm
+  GOROOT=$srcdir/$_hgrepo
+  GOOS=linux
+  GOBIN=$GOROOT/bin
 
   mkdir -p $GOBIN
   cd $GOROOT/src || return 1
 
-  LC_ALL=C ./make.bash || return 1
+  LC_ALL=C PATH=$PATH:$GOBIN ./make.bash || return 1
 
-  cd $GOROOT || return 1
+  cd $GOROOT
+
+  GOROOT=$pkgdir/usr/lib/go # The install directory
 
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/go/LICENSE
   install -Dm644 misc/bash/go $pkgdir/etc/bash_completion.d/go
@@ -46,24 +48,22 @@ build() {
   install -Dm644 misc/emacs/go-mode.el $pkgdir/usr/share/emacs/site-lisp/go-mode.el
   install -Dm644 misc/vim/go.vim $pkgdir/usr/share/vim/vimfiles/syntax/go.vim
 
-  _goroot=$pkgdir/usr/lib/go
-
-  mkdir -p $_goroot/{misc,lib}
+  mkdir -p $GOROOT/{misc,lib}
 
   cp -r bin $pkgdir/usr
-  cp -r pkg $_goroot
-  rm $_goroot/pkg/~place-holder~
+  cp -r pkg $GOROOT
+  rm $GOROOT/pkg/~place-holder~
 
-  cp -r doc $_goroot
-  cp -r lib/godoc $_goroot/lib
-  find src/{pkg,cmd} -name \*.go -exec install -Dm644 {} $_goroot/{} \;
-  install -Dm644 {,$_goroot/}src/pkg/container/vector/Makefile
-  install -Dm644 {,$_goroot/}favicon.ico
-  ln -s ../../share/licenses/go/LICENSE $_goroot
-  cp -r misc/cgo $_goroot/misc
+  cp -r doc $GOROOT
+  cp -r lib/godoc $GOROOT/lib
+  find src/{pkg,cmd} -name \*.go -exec install -Dm644 {} $GOROOT/{} \;
+  install -Dm644 {,$GOROOT/}src/pkg/container/vector/Makefile
+  install -Dm644 {,$GOROOT/}favicon.ico
+  ln -s ../../share/licenses/go/LICENSE $GOROOT
+  cp -r misc/cgo $GOROOT/misc
 
-  cp src/Make.{$GOARCH,cmd,pkg,conf} $_goroot/src
-  cp src/pkg/runtime/{cgocall,runtime}.h $_goroot/src/pkg/runtime
+  cp src/Make.{$GOARCH,cmd,pkg,conf} $GOROOT/src
+  cp src/pkg/runtime/{cgocall,runtime}.h $GOROOT/src/pkg/runtime
 
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
