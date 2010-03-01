@@ -40,7 +40,8 @@ build() {
 
   cd $GOROOT
 
-  GOROOT=$pkgdir/usr/lib/go # The install directory
+  # The install directory
+  GOROOT=$pkgdir/usr/lib/go
 
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/go/LICENSE
   install -Dm644 misc/bash/go $pkgdir/etc/bash_completion.d/go
