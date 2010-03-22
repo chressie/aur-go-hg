@@ -63,7 +63,7 @@ build() {
   ln -s ../../share/licenses/go/LICENSE $GOROOT
   cp -r misc/cgo $GOROOT/misc
 
-  cp src/Make.{$GOARCH,cmd,pkg,conf} $GOROOT/src
+  cp src/Make.{$GOARCH,cmd,common,pkg,conf} $GOROOT/src
   cp src/pkg/runtime/{cgocall,runtime}.h $GOROOT/src/pkg/runtime
 
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
