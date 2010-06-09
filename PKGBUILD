@@ -4,7 +4,7 @@
 # Contributor: Matthew Bauer <mjbauer95 gmail>
 # Contributor: Vesa Kaihlavirta <vegai iki fi>
 
-pkgname=go-lang-hg
+pkgname=go-hg
 pkgver=5610
 pkgrel=1
 pkgdesc='Google Go compiler and tools (hg tip)'
