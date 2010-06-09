@@ -1,8 +1,8 @@
-# Maintainer: Christian Himpel <chressie at gmail dot com>
+# Maintainer: Christian Himpel <chressie gmail>
 # Contributor: Andres Perera <andres87p gmail>
-# Contributor: Ashok Gautham <ScriptDevil at gmail dot com>
-# Contributor: Matthew Bauer <mjbauer95@gmail.com>
-# Contributor: Vesa Kaihlavirta <vegai@iki.fi>
+# Contributor: Ashok Gautham <ScriptDevil gmail>
+# Contributor: Matthew Bauer <mjbauer95 gmail>
+# Contributor: Vesa Kaihlavirta <vegai iki fi>
 
 pkgname=go-lang-hg
 pkgver=5096
