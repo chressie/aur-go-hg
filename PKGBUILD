@@ -5,7 +5,7 @@
 # Contributor: Vesa Kaihlavirta <vegai iki fi>
 
 pkgname=go-hg
-pkgver=5677
+pkgver=5827
 pkgrel=1
 pkgdesc='Google Go compiler and tools (hg tip)'
 arch=(i686 x86_64)
@@ -36,38 +36,26 @@ build() {
   mkdir -p $GOBIN
   cd $GOROOT/src || return 1
 
+  # compile
   LC_ALL=C PATH=$PATH:$GOBIN ./make.bash || return 1
 
   cd $GOROOT
 
-  # The install directory
-  GOROOT=$pkgdir/usr/lib/go
+  # install all files in /opt/go, but skip files and directories starting with '.'
+  mkdir -p $pkgdir/opt/go $pkgdir/usr/bin
+  find -regex '.*/\..*' -prune -o -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/opt/go/{}
+  find -regex '.*/\..*' -prune -o -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/opt/go/{}
+
+  # install binaries in /usr/bin
+  mv $pkgdir/opt/go/bin $pkgdir/usr
 
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/go/LICENSE
   install -Dm644 misc/bash/go $pkgdir/etc/bash_completion.d/go
   install -Dm644 misc/emacs/go-mode-load.el $pkgdir/usr/share/emacs/site-lisp/go-mode-load.el
   install -Dm644 misc/emacs/go-mode.el $pkgdir/usr/share/emacs/site-lisp/go-mode.el
   install -Dm644 misc/vim/syntax/go.vim $pkgdir/usr/share/vim/vimfiles/syntax/go.vim
-  install -Dm644 misc/vim/ftdetect/gofiletype.vim $pkgdir/usr/share/vim/vimfiles/ftdetect/gofiletype.vim
-
-  mkdir -p $GOROOT/{misc,lib}
-
-  cp -r bin $pkgdir/usr
-  cp -r pkg $GOROOT
-  rm $GOROOT/pkg/~place-holder~
-
-  cp -r doc $GOROOT
-  cp -r lib/godoc $GOROOT/lib
-  find src/{pkg,cmd} -name \*.go -exec install -Dm644 {} $GOROOT/{} \;
-  install -Dm644 {,$GOROOT/}src/pkg/container/vector/Makefile
-  install -Dm644 {,$GOROOT/}favicon.ico
-  ln -s ../../share/licenses/go/LICENSE $GOROOT
-  cp -r misc/cgo $GOROOT/misc
-
-  cp src/Make.{$GOARCH,cmd,common,pkg,conf} $GOROOT/src
-  cp src/pkg/runtime/{cgocall,runtime}.h $GOROOT/src/pkg/runtime
-
+  install -Dm644 misc/vim/ftdetect/gofiletype.vim $pkgdir/usr/share/vim/vimfiles/ftdetect/go.vim
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
 }
-md5sums=('67c472bfcfdb760d1d1f0a87cfe3661f')
+md5sums=('b7cd21a7a00922216036b3a992c60435')
