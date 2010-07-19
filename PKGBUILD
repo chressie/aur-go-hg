@@ -17,7 +17,7 @@ provides=(go)
 conflicts=(go)
 options=(!strip !makeflags)
 install=go.install
-source=(go.sh)
+source=(go.sh goinst)
 
 _hgroot=https://go.googlecode.com/hg/
 _hgrepo=go
@@ -41,13 +41,17 @@ build() {
 
   cd $GOROOT
 
-  # install all files in /opt/go, but skip files and directories starting with '.'
+  # install all files
   mkdir -p $pkgdir/opt/go $pkgdir/usr/bin
-  find -regex '.*/\..*' -prune -o -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/opt/go/{}
-  find -regex '.*/\..*' -prune -o -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/opt/go/{}
+  find * -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/opt/go/{}
+  find * -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/opt/go/{}
 
   # install binaries in /usr/bin
   mv $pkgdir/opt/go/bin $pkgdir/usr
+
+  # adjust permissions
+  chmod -R g+w $pkgdir/opt/go
+  find $pkgdir/opt/go -type d -print0 | xargs -0 chmod g+s
 
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/go/LICENSE
   install -Dm644 misc/bash/go $pkgdir/etc/bash_completion.d/go
@@ -57,5 +61,7 @@ build() {
   install -Dm644 misc/vim/ftdetect/gofiletype.vim $pkgdir/usr/share/vim/vimfiles/ftdetect/go.vim
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
+  install -Dm755 $srcdir/goinst $pkgdir/usr/bin/goinst
 }
-md5sums=('b7cd21a7a00922216036b3a992c60435')
+md5sums=('b7cd21a7a00922216036b3a992c60435'
+         '304436b6ab490f98f0028c5ed4b82bbf')

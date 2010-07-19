@@ -1,5 +1,22 @@
 post_install() {
-  echo
-  echo "Source /etc/profile.d/go.sh or relogin"
-  echo
+  usr/sbin/groupadd -f --system golang
+  chgrp -R golang /opt/go
+  bin/cat <<THEEND
+
+NOTE
+----
+
+* check /etc/profile.d/go.sh, then relogin or "source" the file
+* add your user to group 'golang' to be able to 'goinstall' third-party packages
+* to avoid permission issues check the 'goinstall' wrapper '/usr/bin/goinst'
+
+THEEND
+}
+
+post_upgrade() {
+  post_install $1
+}
+
+post_remove() {
+  usr/sbin/groupdel golang &>/dev/null
 }
