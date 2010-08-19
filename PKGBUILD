@@ -38,7 +38,7 @@ build() {
   cd $GOROOT/src || return 1
 
   # compile
-  LC_ALL=C PATH=$PATH:$GOBIN ./make.bash || return 1
+  LC_ALL=C ./make.bash || return 1
 
   cd ..
 
