@@ -43,13 +43,13 @@ build() {
   cd ..
 
   # install all files
-  mkdir -p $pkgdir/opt/go
-  find * -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/opt/go/{}
-  find * -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/opt/go/{}
+  mkdir -p $pkgdir/$GOROOT_FINAL
+  find * -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/$GOROOT_FINAL/{}
+  find * -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/$GOROOT_FINAL/{}
 
   # adjust permissions
-  chmod -R g+w $pkgdir/opt/go
-  find $pkgdir/opt/go -type d -print0 | xargs -0 chmod g+s
+  chmod -R g+w $pkgdir/$GOROOT_FINAL
+  find $pkgdir/$GOROOT_FINAL -type d -print0 | xargs -0 chmod g+s
 
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/go/LICENSE
   install -Dm644 misc/bash/go $pkgdir/etc/bash_completion.d/go
@@ -59,7 +59,7 @@ build() {
   install -Dm644 misc/vim/ftdetect/gofiletype.vim $pkgdir/usr/share/vim/vimfiles/ftdetect/go.vim
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
-  install -Dm755 $srcdir/goinst $pkgdir/opt/go/bin/goinst
+  install -Dm755 $srcdir/goinst $pkgdir/$GOROOT_FINAL/bin/goinst
 }
 md5sums=('64b6ea5bd305eaa48eae7449e432bffb'
          '304436b6ab490f98f0028c5ed4b82bbf')
