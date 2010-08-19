@@ -6,9 +6,10 @@ post_install() {
 NOTE
 ----
 
-* check /etc/profile.d/go.sh, then relogin or "source" the file
+* check /etc/profile.d/go.sh, then relogin or 'source' the file
 * add your user to group 'golang' to be able to 'goinstall' third-party packages
-* to avoid permission issues check the 'goinstall' wrapper '/usr/bin/goinst'
+* to avoid permission issues check the 'goinstall' wrapper '/opt/go/bin/goinst'
+* the go binaries are installed in '/opt/go/bin'
 
 THEEND
 }

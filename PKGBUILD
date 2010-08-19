@@ -30,6 +30,7 @@ build() {
   [ x$CARCH = xx86_64 ] && GOARCH=amd64
   [ x$CARCH = xarm ]    && GOARCH=arm
   GOROOT=$srcdir/$_hgrepo
+  GOROOT_FINAL=/opt/go
   GOOS=linux
   GOBIN=$GOROOT/bin
 
@@ -39,15 +40,12 @@ build() {
   # compile
   LC_ALL=C PATH=$PATH:$GOBIN ./make.bash || return 1
 
-  cd $GOROOT
+  cd ..
 
   # install all files
-  mkdir -p $pkgdir/opt/go $pkgdir/usr/bin
+  mkdir -p $pkgdir/opt/go
   find * -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/opt/go/{}
   find * -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/opt/go/{}
-
-  # install binaries in /usr/bin
-  mv $pkgdir/opt/go/bin $pkgdir/usr
 
   # adjust permissions
   chmod -R g+w $pkgdir/opt/go
@@ -61,7 +59,7 @@ build() {
   install -Dm644 misc/vim/ftdetect/gofiletype.vim $pkgdir/usr/share/vim/vimfiles/ftdetect/go.vim
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
-  install -Dm755 $srcdir/goinst $pkgdir/usr/bin/goinst
+  install -Dm755 $srcdir/goinst $pkgdir/opt/go/bin/goinst
 }
-md5sums=('b7cd21a7a00922216036b3a992c60435'
+md5sums=('64b6ea5bd305eaa48eae7449e432bffb'
          '304436b6ab490f98f0028c5ed4b82bbf')
