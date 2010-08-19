@@ -23,7 +23,7 @@ _hgroot=https://go.googlecode.com/hg/
 _hgrepo=go
 
 build() {
-  local GOARCH GOROOT GOOS GOBIN
+  unset GOARCH GOROOT GOOS GOBIN
   export GOARCH GOROOT GOOS GOBIN
 
   [ x$CARCH = xi686 ]   && GOARCH=386
