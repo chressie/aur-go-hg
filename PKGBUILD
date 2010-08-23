@@ -35,10 +35,10 @@ build() {
   GOBIN=$GOROOT/bin
 
   mkdir -p $GOBIN
-  cd $GOROOT/src || return 1
+  cd $GOROOT/src
 
   # compile
-  LC_ALL=C ./make.bash || return 1
+  LC_ALL=C ./make.bash
 
   cd ..
 
