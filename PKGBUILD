@@ -38,8 +38,21 @@ build() {
 
   # compile
   LC_ALL=C ./make.bash
+}
 
-  cd ..
+package() {
+  unset GOARCH GOROOT GOROOT_FINAL GOOS GOBIN
+  export GOARCH GOROOT GOROOT_FINAL GOOS GOBIN
+
+  [ x$CARCH = xi686 ]   && GOARCH=386
+  [ x$CARCH = xx86_64 ] && GOARCH=amd64
+  [ x$CARCH = xarm ]    && GOARCH=arm
+  GOROOT=$srcdir/$_hgrepo
+  GOROOT_FINAL=/opt/go
+  GOOS=linux
+  GOBIN=$GOROOT/bin
+
+  cd $GOROOT
 
   # install all files
   mkdir -p $pkgdir/$GOROOT_FINAL
