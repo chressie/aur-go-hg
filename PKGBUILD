@@ -61,5 +61,5 @@ build() {
   echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
   install -Dm755 $srcdir/goinst $pkgdir/$GOROOT_FINAL/bin/goinst
 }
-md5sums=('c8ae7a640bc7cf79bc0366223f93b28a'
+md5sums=('a71308b0959ddc712467db60c7ca1df5'
          '304436b6ab490f98f0028c5ed4b82bbf')
