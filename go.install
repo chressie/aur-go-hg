@@ -1,7 +1,7 @@
 post_install() {
   usr/sbin/groupadd -f --system golang
   chgrp -R golang /opt/go
-  bin/cat <<THEEND
+  bin/cat <<EOI
 
 NOTE
 ----
@@ -11,7 +11,7 @@ NOTE
 * to avoid permission issues check the 'goinstall' wrapper '/opt/go/bin/goinst'
 * the go binaries are installed in '/opt/go/bin'
 
-THEEND
+EOI
 }
 
 post_upgrade() {
