@@ -29,17 +29,16 @@ build() {
 }
 
 package() {
-  GOROOT_FINAL=/opt/go
   cd $srcdir/$_hgrepo
 
   # install all files
-  mkdir -p $pkgdir/$GOROOT_FINAL
-  find * -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/$GOROOT_FINAL/{}
-  find * -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/$GOROOT_FINAL/{}
+  mkdir -p $pkgdir/opt/go
+  find * -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/opt/go/{}
+  find * -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/opt/go/{}
 
   # adjust permissions
-  chmod -R g+w $pkgdir/$GOROOT_FINAL
-  find $pkgdir/$GOROOT_FINAL -type d -print0 | xargs -0 chmod g+s
+  chmod -R g+w $pkgdir/opt/go
+  find $pkgdir/opt/go -type d -print0 | xargs -0 chmod g+s
 
   install -Dm644 LICENSE $pkgdir/usr/share/licenses/go/LICENSE
   install -Dm644 misc/bash/go $pkgdir/etc/bash_completion.d/go
@@ -47,8 +46,9 @@ package() {
   install -Dm644 misc/emacs/go-mode.el $pkgdir/usr/share/emacs/site-lisp/go-mode.el
   install -Dm644 misc/vim/syntax/go.vim $pkgdir/usr/share/vim/vimfiles/syntax/go.vim
   install -Dm644 misc/vim/ftdetect/gofiletype.vim $pkgdir/usr/share/vim/vimfiles/ftdetect/go.vim
+
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
-  install -Dm755 $srcdir/goinst $pkgdir/$GOROOT_FINAL/bin/goinst
+  install -Dm755 $srcdir/goinst $pkgdir/opt/go/bin/goinst
 }
 md5sums=('a71308b0959ddc712467db60c7ca1df5'
          '304436b6ab490f98f0028c5ed4b82bbf')
