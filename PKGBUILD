@@ -70,7 +70,6 @@ package() {
   install -Dm644 misc/vim/syntax/go.vim $pkgdir/usr/share/vim/vimfiles/syntax/go.vim
   install -Dm644 misc/vim/ftdetect/gofiletype.vim $pkgdir/usr/share/vim/vimfiles/ftdetect/go.vim
   install -Dm755 $srcdir/go.sh $pkgdir/etc/profile.d/go.sh
-  echo export GOARCH=$GOARCH >> $pkgdir/etc/profile.d/go.sh
   install -Dm755 $srcdir/goinst $pkgdir/$GOROOT_FINAL/bin/goinst
 }
 md5sums=('a71308b0959ddc712467db60c7ca1df5'
