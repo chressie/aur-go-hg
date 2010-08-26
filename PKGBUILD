@@ -23,36 +23,14 @@ _hgroot=https://go.googlecode.com/hg/
 _hgrepo=go
 
 build() {
-  unset GOARCH GOROOT GOROOT_FINAL GOOS GOBIN
-  export GOARCH GOROOT GOROOT_FINAL GOOS GOBIN
-
-  [ x$CARCH = xi686 ]   && GOARCH=386
-  [ x$CARCH = xx86_64 ] && GOARCH=amd64
-  [ x$CARCH = xarm ]    && GOARCH=arm
-  GOROOT=$srcdir/$_hgrepo
-  GOROOT_FINAL=/opt/go
-  GOOS=linux
-  GOBIN=$GOROOT/bin
-
-  cd $GOROOT/src
-
-  # compile
-  LC_ALL=C ./make.bash
+  unset GOARCH GOBIN GOOS GOROOT
+  cd $srcdir/$_hgrepo/src
+  LC_ALL=C GOROOT_FINAL=/opt/go ./make.bash
 }
 
 package() {
-  unset GOARCH GOROOT GOROOT_FINAL GOOS GOBIN
-  export GOARCH GOROOT GOROOT_FINAL GOOS GOBIN
-
-  [ x$CARCH = xi686 ]   && GOARCH=386
-  [ x$CARCH = xx86_64 ] && GOARCH=amd64
-  [ x$CARCH = xarm ]    && GOARCH=arm
-  GOROOT=$srcdir/$_hgrepo
   GOROOT_FINAL=/opt/go
-  GOOS=linux
-  GOBIN=$GOROOT/bin
-
-  cd $GOROOT
+  cd $srcdir/$_hgrepo
 
   # install all files
   mkdir -p $pkgdir/$GOROOT_FINAL
