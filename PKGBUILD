@@ -34,7 +34,6 @@ build() {
   GOOS=linux
   GOBIN=$GOROOT/bin
 
-  mkdir -p $GOBIN
   cd $GOROOT/src
 
   # compile
