@@ -36,8 +36,6 @@ package() {
   find * -type f ! -executable -print0 | xargs -0 -I {} install -Dm644 {} $pkgdir/opt/go/{}
   find * -type f -executable -print0 | xargs -0 -I {} install -Dm755 {} $pkgdir/opt/go/{}
 
-  rm $pkgdir/opt/go/{bin,pkg}/~place-holder~
-
   # adjust permissions
   chmod -R g+w $pkgdir/opt/go
   find $pkgdir/opt/go -type d -print0 | xargs -0 chmod g+s
