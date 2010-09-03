@@ -5,7 +5,7 @@
 # Contributor: Vesa Kaihlavirta <vegai iki fi>
 
 pkgname=go-hg
-pkgver=6095
+pkgver=6163
 pkgrel=1
 pkgdesc='Google Go compiler and tools (hg tip)'
 arch=(i686 x86_64)
